@@ -71,6 +71,327 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Redis快速入门" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/01/20/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="article-date">
+  <time class="dt-published" datetime="2026-01-20T07:31:08.000Z" itemprop="datePublished">2026-01-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/01/20/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Redis快速入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis快速入门"><a href="#Redis快速入门" class="headerlink" title="Redis快速入门"></a>Redis快速入门</h1><h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
+<li>键值（key-value）型，value支持多种不同数据结构，功能丰富</li>
+<li>单线程，每个命令具备原子性</li>
+<li>低延迟，速度快（基于内存、IO多路复用、良好的编码）。</li>
+<li>支持数据持久化</li>
+<li>支持主从集群、分片集群</li>
+<li>支持多语言客户端</li>
+</ul>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><table>
+    <tr>
+        <td rowspan="5">基本类型</td><td>String</td><td>aaa</td>
+    </tr>
+    <tr>
+        <td>Hash</td><td>{name:"aaa",age:10}</td>
+    </tr>
+    <tr>
+        <td>List</td><td>[A->B->C]</td>
+    </tr>
+    <tr>
+        <td>Set</td><td>{A,B,C}</td>
+    </tr>
+    <tr>
+        <td>SortedSet</td><td>{A:1,B:2,C:3}</td>
+    </tr>
+        <tr>
+        <td rowspan="5">特殊类型</td><td>GEO</td><td>{A:(120.1,45)}</td>
+    </tr>
+    <tr>
+        <td>BitMap</td><td>01101010101</td>
+    </tr>
+    <tr>
+        <td>HyperLog</td><td>01101010101</td>
+    </tr>
+</table>
+
+
+<p>通用命令：</p>
+<ul>
+<li><p>KEYS：查看符合模板的所有key</p>
+</li>
+<li><p>DEL：删除一个指定的key</p>
+</li>
+<li><p>EXISTS：判断key是否存在</p>
+</li>
+<li><p>EXPIRE：给一个key设置有效期，有效期到期时该key会被自动删除</p>
+</li>
+<li><p>TTL：查看一个KEY的剩余有效期</p>
+</li>
+</ul>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>存储格式：</p>
+<table>
+    <tr>
+        <th >KEY</th><th >VALUE</th>
+    </tr>
+    <tr>
+        <td>userName</td><td>aaa</td>
+    </tr>
+    <tr>
+        <td>userAge</td><td>10</td>
+    </tr>
+</table>
+
+
+<ul>
+<li>key-value</li>
+<li>value分为string、int、float</li>
+</ul>
+<p>key的层级结构：</p>
+<ul>
+<li>采用 **: **进行间隔，如：项目名:业务名:类型:id</li>
+</ul>
+<p>String命令：</p>
+<ul>
+<li><p>SET：添加或者修改已经存在的一个String类型的键值对</p>
+</li>
+<li><p>GET：根据key获取String类型的value</p>
+</li>
+<li><p>MSET：批量添加多个String类型的键值对</p>
+</li>
+<li><p>MGET：根据多个key获取多个String类型的value</p>
+</li>
+<li><p>INCR：让一个整型的key自增1</p>
+</li>
+<li><p>INCRBY:让一个整型的key自增并指定步长，例如：incrby num 2 让num值自增2</p>
+</li>
+<li><p>INCRBYFLOAT：让一个浮点类型的数字自增并指定步长</p>
+</li>
+<li><p>SETNX：添加一个String类型的键值对，前提是这个key不存在，否则不执行</p>
+</li>
+<li><p>SETEX：添加一个String类型的键值对，并且指定有效期</p>
+</li>
+</ul>
+<h3 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h3><p>存储格式：</p>
+<table>
+    <tr>
+        <th rowspan="2">KEY</th><th colspan="2">VALUE</th>
+    </tr>
+    <tr>
+        <th>field</th><th>value</th>
+    </tr>
+    <tr>
+        <td rowspan="2">user</td><td>name</td><td>aaa</td>
+    </tr>
+    <tr>
+        <td>age</td><td>10</td>
+    </tr>
+</table>
+
+
+<ul>
+<li>采用key-value</li>
+<li>value中分为field-value</li>
+</ul>
+<p>Hash命令：</p>
+<ul>
+<li><p>HSET key field value：添加或者修改hash类型key的field的值</p>
+</li>
+<li><p>HGET key field：获取一个hash类型key的field的值</p>
+</li>
+<li><p>HMSET：批量添加多个hash类型key的field的值</p>
+</li>
+<li><p>HMGET：批量获取多个hash类型key的field的值</p>
+</li>
+<li><p>HGETALL：获取一个hash类型的key中的所有的field和value</p>
+</li>
+<li><p>HKEYS：获取一个hash类型的key中的所有的field</p>
+</li>
+<li><p>HVALS：获取一个hash类型的key中的所有的value</p>
+</li>
+<li><p>HINCRBY:让一个hash类型key的字段值自增并指定步长</p>
+</li>
+<li><p>HSETNX：添加一个hash类型的key的field值，前提是这个field不存在，否则不执行</p>
+</li>
+</ul>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向链表结构。既可以支持正向检索和也可以支持反向检索。</p>
+<p>特征也与LinkedList类似：</p>
+<ul>
+<li><p>有序</p>
+</li>
+<li><p>元素可以重复</p>
+</li>
+<li><p>插入和删除快</p>
+</li>
+<li><p>查询速度一般</p>
+</li>
+</ul>
+<p>常用来存储一个有序数据，例如：朋友圈点赞列表，评论列表等。</p>
+<p>List命令：</p>
+<ul>
+<li><p>LPUSH key element … ：向列表左侧插入一个或多个元素</p>
+</li>
+<li><p>LPOP key：移除并返回列表左侧的第一个元素，没有则返回nil</p>
+</li>
+<li><p>RPUSH key element … ：向列表右侧插入一个或多个元素</p>
+</li>
+<li><p>RPOP key：移除并返回列表右侧的第一个元素</p>
+</li>
+<li><p>LRANGE key star end：返回一段角标范围内的所有元素</p>
+</li>
+<li><p>BLPOP和BRPOP：与LPOP和RPOP类似，只不过在没有元素时等待指定时间，而不是直接返回nil</p>
+</li>
+</ul>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null的HashMap。因为也是一个hash表，因此具备与HashSet类似的特征：</p>
+<ul>
+<li><p>无序</p>
+</li>
+<li><p>元素不可重复</p>
+</li>
+<li><p>查找快</p>
+</li>
+<li><p>支持交集、并集、差集等功能</p>
+</li>
+</ul>
+<p>Set命令</p>
+<ul>
+<li><p>SADD key member … ：向set中添加一个或多个元素</p>
+</li>
+<li><p>SREM key member … : 移除set中的指定元素</p>
+</li>
+<li><p>SCARD key： 返回set中元素的个数</p>
+</li>
+<li><p>SISMEMBER key member：判断一个元素是否存在于set中</p>
+</li>
+<li><p>SMEMBERS：获取set中的所有元素</p>
+</li>
+<li><p>SINTER key1 key2 … ：求key1与key2的交集</p>
+</li>
+<li><p>SDIFF key1 key2 … ：求key1与key2的差集</p>
+</li>
+<li><p>SUNION key1 key2 ..：求key1和key2的并集</p>
+</li>
+</ul>
+<h3 id="SortSet"><a href="#SortSet" class="headerlink" title="SortSet"></a>SortSet</h3><p>Redis的SortedSet是一个可排序的set集合，与Java中的TreeSet有些类似，但底层数据结构却差别很大。SortedSet中的每一个元素都带有一个score属性，可以基于score属性对元素排序，底层的实现是一个跳表（SkipList）加 hash表。</p>
+<p>SortedSet具备下列特性：</p>
+<ul>
+<li><p>可排序</p>
+</li>
+<li><p>元素不重复</p>
+</li>
+<li><p>查询速度快</p>
+</li>
+</ul>
+<p>因为SortedSet的可排序特性，经常被用来实现排行榜这样的功能。</p>
+<p>SortSet命令：</p>
+<ul>
+<li><p>ZADD key score member：添加一个或多个元素到sorted set ，如果已经存在则更新其score值</p>
+</li>
+<li><p>ZREM key member：删除sorted set中的一个指定元素</p>
+</li>
+<li><p>ZSCORE key member : 获取sorted set中的指定元素的score值</p>
+</li>
+<li><p>ZRANK key member：获取sorted set 中的指定元素的排名</p>
+</li>
+<li><p>ZCARD key：获取sorted set中的元素个数</p>
+</li>
+<li><p>ZCOUNT key min max：统计score值在给定范围内的所有元素的个数</p>
+</li>
+<li><p>ZINCRBY key increment member：让sorted set中的指定元素自增，步长为指定的increment值</p>
+</li>
+<li><p>ZRANGE key min max：按照score排序后，获取指定排名范围内的元素</p>
+</li>
+<li><p>ZRANGEBYSCORE key min max：按照score排序后，获取指定score范围内的元素</p>
+</li>
+<li><p>ZDIFF、ZINTER、ZUNION：求差集、交集、并集</p>
+</li>
+</ul>
+<h2 id="Java客户端"><a href="#Java客户端" class="headerlink" title="Java客户端"></a>Java客户端</h2><ul>
+<li>Jedis：采用Redis命令作为方法名称，但是线程不安全</li>
+<li>Lettuce：基于Netty，线程安全，支持Redis哨兵模式、集群模式、管道模式</li>
+<li>Redisson：基于Redis的分布式可伸缩的Java数据结构集合</li>
+<li>Spring Data Redis：整合Jedis和Letturce，提供统一api</li>
+</ul>
+<h3 id="SpringDataRedis"><a href="#SpringDataRedis" class="headerlink" title="SpringDataRedis"></a>SpringDataRedis</h3><p>不同数据结构API</p>
+<table>
+<thead>
+<tr>
+<th align="center">API</th>
+<th align="center">返回值</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">redisTemplate</td>
+<td align="center"></td>
+<td align="center">通用命令</td>
+</tr>
+<tr>
+<td align="center">redisTemplate.opsForValue()</td>
+<td align="center">ValueOperations</td>
+<td align="center">操作String类型数据</td>
+</tr>
+<tr>
+<td align="center">redisTemplate.opsForHash()</td>
+<td align="center">HashOperations</td>
+<td align="center">操作Hash类型数据</td>
+</tr>
+<tr>
+<td align="center">redisTemplate.opsForList()</td>
+<td align="center">ListOperations</td>
+<td align="center">操作List类型数据</td>
+</tr>
+<tr>
+<td align="center">redisTemplate.opsForSet()</td>
+<td align="center">SetOperations</td>
+<td align="center">操作Set类型数据</td>
+</tr>
+<tr>
+<td align="center">redisTemplate.opsForZSet()</td>
+<td align="center">ZSetOperations</td>
+<td align="center">操作SortedSet类型数据</td>
+</tr>
+</tbody></table>
+<p>配置依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--Redis依赖--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--连接池依赖--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.199</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">*********</span></span><br><span class="line">    <span class="attr">lettuce:</span></span><br><span class="line">      <span class="attr">pool:</span></span><br><span class="line">        <span class="attr">max-active:</span> <span class="number">10</span></span><br><span class="line">        <span class="attr">max-idle:</span> <span class="number">10</span></span><br><span class="line">        <span class="attr">min-idle:</span> <span class="number">1</span></span><br><span class="line">        <span class="attr">time-between-eviction-runs:</span> <span class="string">10s</span></span><br></pre></td></tr></table></figure>
+
+<p>测试用例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisTest</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">testString</span><span class="params">()</span> &#123; </span><br><span class="line">        <span class="comment">// 插入一条string类型数据</span></span><br><span class="line">        redisTemplate.opsForValue().set(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line">        <span class="comment">// 读取一条string类型数据</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">name</span> <span class="operator">=</span> redisTemplate.opsForValue().get(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;name = &quot;</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>序列化会储存class等信息造成额外开销，一般使用StringRedisTemplate操作字符串，手动序列化与反序列化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"><span class="comment">// JSON工具</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ObjectMapper</span> <span class="variable">mapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testStringTemplate</span><span class="params">()</span> <span class="keyword">throws</span> JsonProcessingException &#123;</span><br><span class="line"><span class="comment">// 准备对象</span></span><br><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;aaa&quot;</span>, <span class="number">10</span>);</span><br><span class="line"><span class="comment">// 手动序列化</span></span><br><span class="line"><span class="type">String</span> <span class="variable">json</span> <span class="operator">=</span> mapper.writeValueAsString(user);</span><br><span class="line"><span class="comment">// 写入一条数据到redis</span></span><br><span class="line">stringRedisTemplate.opsForValue().set(<span class="string">&quot;user:200&quot;</span>, json); </span><br><span class="line">    <span class="comment">// 读取数据</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">val</span> <span class="operator">=</span> stringRedisTemplate.opsForValue().get(<span class="string">&quot;user:200&quot;</span>);</span><br><span class="line">    <span class="comment">// 反序列化</span></span><br><span class="line">    <span class="type">User</span> <span class="variable">user1</span> <span class="operator">=</span> mapper.readValue(val, User.class);</span><br><span class="line">    System.out.println(<span class="string">&quot;user1 = &quot;</span> + user1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/01/20/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" data-id="cmkm9zui400008sv57es4eqf8" data-title="Redis快速入门" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Langchain4j" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/01/15/Langchain4j/" class="article-date">
@@ -447,6 +768,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/01/20/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Redis快速入门</a>
+          </li>
         
           <li>
             <a href="/2026/01/15/Langchain4j/">&#39;Langchain4j&#39;</a>
